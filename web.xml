@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  version="4.0"
+  metadata-complete="true">
+
+  <servlet>
+  <servlet-name>verification</servlet-name>
+  <servlet-class>Validation.Verification</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>verification</servlet-name>
+  <url-pattern>/verification</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  <servlet-name>servlet</servlet-name>
+  <servlet-class>Validation.MyServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+  <servlet-name>servlet</servlet-name>
+  <url-pattern>/my-servlet</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+  <filter-name>welcome</filter-name>
+  <filter-class>Validation.ValidationFilter</filter-class>
+  </filter>
+  
+  <filter-mapping>
+  <filter-name>welcome</filter-name>
+  <url-pattern>/my-servlet</url-pattern>
+  </filter-mapping>
+
+</web-app>
