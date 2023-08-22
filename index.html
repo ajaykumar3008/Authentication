@@ -5,50 +5,30 @@
 <title>verification</title>
 <style type="text/css">
 body{
-	margin-top:18%;
-
+    margin-top: 18%;
 }
-
 </style>
 </head>
 <body>
-
 <div align="center">
-	<h1 align="center">LOGIN</h1>
-	<label for="user">User Name:</label>
+    <h1 align="center">LOGIN</h1>
+    <label for="user">User Name:</label>
     <input type="text" id="user" name="user"><br><br>
     <label for="pass">Password:</label>
     <input type="password" id="pass" name="pass"><br><br>
-	<button name="log" value="login" onclick="verify()">login</button>
+    <button onclick="verify()">login</button>
 </div>
-
 <script>
-
-		function verify(){
-			
-			const user=document.getElementById("user").value;
-			const pass=document.getElementById("pass").value;
-			var hr=new XMLHttpRequest();
-			
-			hr.open('GET','http://localhost:8081/Authentication/Verification',true);
-			hr.setRequestHeader("user",user);
-			hr.setRequestHeader("pass",pass);
-			hr.onreadystatechange=function(){
-				
-				if(hr.readyState===4&&hr.status===200){
-					
-					console.log(hr.responseText);
-					
-				}
-				
-				
-			};
-			hr.send();
-			
-		}
-
-
+    function verify(){
+        const user = document.getElementById("user").value;
+        const pass = document.getElementById("pass").value;
+        var hr = new XMLHttpRequest();
+        hr.open('GET', 'http://localhost:8080/Authentication/verification', true);
+        console.log("ajay");
+        hr.setRequestHeader("user", user);
+        hr.setRequestHeader("pass", pass);
+        hr.send();
+    }
 </script>
-
 </body>
 </html>
