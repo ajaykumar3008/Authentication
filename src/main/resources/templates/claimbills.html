@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Claims Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007acc;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .claim-info {
+            margin-bottom: 20px;
+        }
+
+        .claim-bills {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Claim Bills</h1>
+        
+        <table class="table table-bordered claim-bills">
+            <thead>
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Bill Index</th>
+                    <th>Document Title</th>
+                    <th>Document Path</th>
+                    <th>Claim Amount</th>
+                    <th>Processed Amount</th>
+                    <th>Processed Date</th>
+                    <th>Processed By</th>
+                    <th>Remarks</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="claimBill : ${claimBills}">
+                    <td th:text="${claimBill.claimId}"></td>
+                    <td th:text="${claimBill.billIndex}"></td>
+                    <td th:text="${claimBill.documentTitle}"></td>
+                    <td>
+                        <a th:href="${claimBill.documentPath}" target="_blank" th:text="${claimBill.documentPath}">View Document</a>
+                    </td>
+                    <td th:text="${claimBill.claimAmount}"></td>
+                    <td th:text="${claimBill.processedAmount}"></td>
+                    <td th:text="${claimBill.processedDate}"></td>
+                    <td th:text="${claimBill.processedBy}"></td>
+                    <td th:text="${claimBill.remarks}"></td>
+                    <td th:text="${claimBill.status}"></td>
+                    <td>
+                    <a class="btn btn-primary" th:href="@{'/docbills?clbl_billindex=' + ${claimBill.billIndex}}">Proccess Bill</a>
+                </td>
+                </tr>
+            </tbody>
+        </table>
+</body>
+</html>

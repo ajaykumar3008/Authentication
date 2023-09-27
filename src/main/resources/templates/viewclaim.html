@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Claims Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007acc;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .claim-info {
+            margin-bottom: 20px;
+        }
+
+        /* Add styles for editable fields */
+        .editable-field {
+            display: inline-block;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Style labels differently */
+        .label {
+            font-weight: bold;
+            color: #007acc;
+            display: inline-block;
+            width: 180px; /* Adjust width as needed */
+        }
+
+        .save-button {
+            display: none;
+        }
+         .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Style buttons */
+        .btn-group {
+            display: inline-block; /* Make buttons inline */
+        }
+    </style>
+</head>
+
+
+    <div class="container">
+        <h1>Claims Details</h1>
+        
+         <a class="btn btn-primary" th:href="@{'/getDiseases?policy=' + ${claim.clamIplcId}}">View Covered Diseases</a>
+        <a class="btn btn-primary" th:href="@{'/allclaimbills?claimid=' + ${claim.clamId}}">View Claim Bills</a>
+<br><br>
+
+       
+
+      <div class="claim-info">
+    <label class="label">Claim Source:</label>
+    <input type="text" id="1" th:value="${claim.clamSource}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Type:</label>
+    <input type="text" id="2" th:value="${claim.clamType}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Date:</label>
+    <input type="text" id="3" th:value="${claim.clamDate}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim IPLC ID:</label>
+    <input type="text" id="4" th:value="${claim.clamIplcId}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Requested Amount:</label>
+    <input type="text" id="5" th:value="${claim.clamAmountRequested}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Processed Amount:</label>
+    <input type="text" th:value="${claim.clamProcessedAmount}" id="ProcessedAmountInput" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Processed Date:</label>
+    <input type="text" id="7" th:value="${claim.clamProcessedDate}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Processed By:</label>
+    <input type="text" id="8" th:value="${claim.clamProcessedBy}" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Remarks:</label>
+    <input type="text" th:value="${claim.clamRemarks}" id="remarksInput" />
+</div>
+
+<div class="claim-info">
+    <label class="label">Claim Status:</label>
+    <input type="text" th:value="${claim.clamStatus}" id="statusInput" />
+</div>
+
+<form action="processClaim" method="POST">
+    <input type="hidden" id="clamId" name="clamId" th:value="${claim.clamId}" />
+    <input type="hidden" id="clamRemarks" name="clamRemarks" value="" />
+    <input type="hidden" id="clamStatus" name="clamStatus" value="" />
+    <input type="hidden" id="clamProcessedAmount" name="clamProcessedAmount" value="" />
+    <div class="button-container">
+        <div class="btn-group">
+            <input type="submit" class="btn btn-success" onclick="saveChanges()" value="Save" />
+        </div>
+        </div>
+        </form>
+        <div class="button-container">
+        <div class="btn-group">
+            <button class="btn btn-primary" type="button" onclick="editFields()">Edit</button>
+
+        </div>
+    </div>
+
+</div>
+<script>
+	
+	 			document.getElementById("1").readOnly=true;
+		        document.getElementById("2").readOnly=true;
+		        document.getElementById("3").readOnly=true;
+		        document.getElementById("4").readOnly=true;
+		        document.getElementById("5").readOnly=true;
+		        document.getElementById("ProcessedAmountInput").readOnly=true;
+		        document.getElementById("7").readOnly=true;
+		        document.getElementById("8").readOnly=true;
+		        document.getElementById("remarksInput").readOnly=true;
+		        document.getElementById("statusInput").readOnly=true;
+	
+    function editFields() {
+        document.getElementById("ProcessedAmountInput").readOnly=false;
+        document.getElementById("remarksInput").readOnly=false;
+        document.getElementById("statusInput").readOnly=false;
+        
+        window.alert("Edit option enabled only for Processed amount,remarks and status");
+    }
+
+    function saveChanges() {
+        const statusInput = document.getElementById("statusInput").value;
+        const remarksInput = document.getElementById("remarksInput").value;
+        const processedAmountInput = document.getElementById("ProcessedAmountInput").value;
+
+        document.getElementById("clamStatus").value = statusInput;
+        document.getElementById("clamRemarks").value = remarksInput;
+        document.getElementById("clamProcessedAmount").value = processedAmountInput;
+    }
+</script>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Claims Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+       body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007acc;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .claim-info {
+            margin-bottom: 20px;
+        }
+
+        /* Add styles for editable fields */
+        .editable-field {
+            display: inline-block;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Style labels differently */
+        .label {
+            font-weight: bold;
+            color: #007acc;
+            display: inline-block;
+            width: 180px; /* Adjust width as needed */
+        }
+
+        /* Center buttons */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Style buttons */
+        .btn-group {
+            display: inline-block; /* Make buttons inline */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Claims Bill</h1>
+<br><br>
+        <div class="claim-info">
+            <span class="label">Document Title:</span>
+            <input type="text" id="documentTitleInput" class="editable-field" th:value="${claim.documentTitle}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Document Path:</span>
+            <input type="text" id="documentPathInput" class="editable-field" th:value="${claim.documentPath}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Claim Amount:</span>
+            <input type="text" id="claimAmountInput" class="editable-field" th:value="${claim.claimAmount}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Processed Amount:</span>
+            <input type="text" id="processedAmountInput" class="editable-field" th:value="${claim.processedAmount}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Processed Date:</span>
+            <input type="text" id="processedDate" class="editable-field" th:value="${claim.processedDate}"/>
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Processed By:</span>
+            <input type="text" id="processedByInput" class="editable-field" th:value="${claim.processedBy}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Remarks:</span>
+            <input type="text" id="remarksInput" class="editable-field" th:value="${claim.remarks}" />
+        </div>
+
+        <div class="claim-info">
+            <span class="label">Status:</span>
+            <input type="text" id="statusInput" class="editable-field" th:value="${claim.status}" />
+        </div>
+<form action="updateClaimBill" method="POST" id="claimForm">
+    <input type="hidden" id="billIndex" name="billIndex" th:value="${claim.billIndex}" />
+    <input type="hidden" id="remarksHidden" name="remarks" value="" />
+    <input type="hidden" id="statusHidden" name="status" value="" />
+    <input type="hidden" id="processedAmountHidden" name="processedAmount" value="" />
+
+    <input type="hidden" id="documentTitleHidden" name="documentTitle" value="" />
+    <input type="hidden" id="documentPathHidden" name="documentPath" value="" />
+    <input type="hidden" id="claimAmountHidden" name="claimAmount" value="" />
+    <input type="hidden" id="processedAmountInputHidden" name="processedAmountInput" value="" />
+    <input type="hidden" id="processedByInputHidden" name="processedByInput" value="" />
+    <input type="hidden" id="remarksInputHidden" name="remarksInput" value="" />
+    <input type="hidden" id="statusInputHidden" name="statusInput" value="" />
+<div class="button-container">
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-success" onclick="saveFields()" value="Save">
+                </div>
+</div>
+</form>
+
+   
+    <div class="button-container">
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="edit()">Edit</button>
+        </div>
+    </div>
+
+
+</div>
+
+    <script>
+		
+		        document.getElementById("documentTitleInput").readOnly=true;
+		        document.getElementById("documentPathInput").readOnly=true;
+		        document.getElementById("claimAmountInput").readOnly=true;
+		        document.getElementById("processedDate").readOnly=true;
+		        document.getElementById("processedByInput").readOnly=true;
+		        document.getElementById("remarksInput").readOnly=true;
+		        document.getElementById("processedAmountInput").readOnly=true;
+		        document.getElementById("statusInput").readOnly=true;
+		
+		function edit(){
+			document.getElementById("remarksInput").readOnly=false;
+		        document.getElementById("processedAmountInput").readOnly=false;
+		        document.getElementById("statusInput").readOnly=false;
+		        window.alert("Edit option enabled only for Processed amount,remarks and status");
+		}
+		
+		
+    function saveFields() {
+        const documentTitleInput = document.getElementById("documentTitleInput").value;
+        const documentPathInput = document.getElementById("documentPathInput").value;
+        const claimAmountInput = document.getElementById("claimAmountInput").value;
+        const processedAmountInput = document.getElementById("processedAmountInput").value;
+        const processedByInput = document.getElementById("processedByInput").value;
+        const remarksInput = document.getElementById("remarksInput").value;
+        const statusInput = document.getElementById("statusInput").value;
+
+        document.getElementById("documentTitleHidden").value = documentTitleInput;
+        document.getElementById("documentPathHidden").value = documentPathInput;
+        document.getElementById("claimAmountHidden").value = claimAmountInput;
+        document.getElementById("processedAmountHidden").value = processedAmountInput;
+        document.getElementById("processedByInputHidden").value = processedByInput;
+        document.getElementById("remarksHidden").value = remarksInput;
+        document.getElementById("statusHidden").value = statusInput;
+
+        // Submit the form to process the data
+        document.getElementById("claimForm").submit();
+    }
+</script>
+
+
+
+</body>
+
+</html>

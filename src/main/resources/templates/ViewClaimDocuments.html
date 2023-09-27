@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Claims Details</title>
+<style>
+table {
+	border-collapse: collapse;
+	width: 80%;
+	margin-top: 20px;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+
+th, td {
+	padding: 8px;
+	text-align: left;
+}
+
+th {
+	background-color: #333;
+	color: #fff;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+</style>
+</head>
+
+<body>
+	<h1>Claims Details</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Bill Index</th>
+				<th>Document Title</th>
+				<th>Document Path</th>
+				<th>Claim Amount</th>
+				<th>Processed Amount</th>
+				<th>Processed Date</th>
+				<th>Processed By</th>
+				<th>Claim Remarks</th>
+				<th>Claim Status</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody th:each="claim : ${claim}">
+			<tr>
+				<td th:text="${claim.billIndex}"></td>
+				<td th:text="${claim.documentTitle}"></td>
+				<td>
+    <a th:text="${claim.documentTitle}" th:href="${claim.documentPath}" target="_blank">View Document</a>
+</td>
+
+				<td th:text="${claim.claimAmount}"></td>
+				<td><span id="processedAmountValue"
+					th:text="${claim.processedAmount}"></span> <input type="text"
+					id="processedAmountInput" style="display: none;" /></td>
+				<td><span id="processedDateValue"
+					th:text="${claim.processedDate}"></span> <input type="text"
+					id="processedDateInput" style="display: none;" /></td>
+				<td><span id="processedByValue" th:text="${claim.processedBy}"></span>
+					<input type="text" id="processedByInput" style="display: none;" />
+				</td>
+				<td><span id="remarksValue" th:text="${claim.remarks}"></span>
+					<input type="text" id="remarksInput" style="display: none;" /></td>
+				<td><span id="statusValue" th:text="${claim.status}"></span> <input
+					type="text" id="statusInput" style="display: none;" /></td>
+				<td></td>
+				<td><form action="docbills" method="post">
+					<input type="hidden" name="billIndex" th:value="${claim.billIndex}">
+					<input type="submit" value="View">  
+				</form>
+			</tr>
+		</tbody>
+	</table>
+
+	<script>
+		function viewDocument(documentPath) {
+			// You can implement the logic to view the document here
+			// For example, opening the document in a new tab or window
+			window.open(documentPath, '_blank');
+		}
+	</script>
+</body>
+
+</html>

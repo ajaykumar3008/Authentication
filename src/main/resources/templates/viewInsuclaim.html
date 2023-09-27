@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Claims Details</title>
+</head>
+
+<body>
+	<h1>Claims Details</h1>
+
+	<div>
+		<strong>Claim ID:</strong>
+		<span th:text="${claim.clamId}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Source:</strong>
+		<span th:text="${claim.clamSource}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Type:</strong>
+		<span th:text="${claim.clamType}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Date:</strong>
+		<span th:text="${claim.clamDate}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Amount Requested:</strong>
+		<span th:text="${claim.clamAmountRequested}"></span>
+	</div>
+
+	<div>
+		<strong>Claim IPLC ID:</strong>
+		<span th:text="${claim.clamIplcId}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Processed Amount:</strong>
+		<span th:text="${claim.clamProcessedAmount}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Processed Date:</strong>
+		<span th:text="${claim.clamProcessedDate}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Processed By:</strong>
+		<span th:text="${claim.clamProcessedBy}"></span>
+	</div>
+
+	<div>
+		<strong>Claim Remarks:</strong>
+		<span th:text="${claim.clamRemarks}" id="remarksValue"></span>
+		<input type="text" id="remarksInput" style="display: none;" />
+	</div>
+
+	<div>
+		<strong>Claim Status:</strong>
+		<span th:text="${claim.clamStatus}" id="statusValue"></span>
+		<input type="text" id="statusInput" style="display: none;" />
+
+	</div>
+	<button onclick="editStatus()">Edit</button>
+	<form action="processClaim" method="POST">
+		<input type="hidden" id="clamId" name="clamId" th:value="${claim.clamId}" />
+		<input type="hidden" id="clamRemarks" name="clamRemarks" value=""/>
+		<input type="hidden" id="clamStatus" name="clamStatus" value=""/>
+		<input type="submit" onclick="doo()" value="Save">
+	</form>
+	<script>
+
+		
+		function editStatus() {
+			const statusSpan = document.getElementById("statusValue");
+			const statusInput = document.getElementById("statusInput");
+
+			statusInput.value = statusSpan.innerText;
+			statusSpan.style.display = "none";
+			statusInput.style.display = "inline-block";
+			const remarksSpan = document.getElementById("remarksValue");
+			const remarksInput = document.getElementById("remarksInput");
+
+			remarksInput.value = remarksSpan.innerText;
+			remarksSpan.style.display = "none";
+			remarksInput.style.display = "inline-block";
+		}
+		function doo(){
+			const statusSpan = document.getElementById("statusInput").value;
+			const remarksSpan = document.getElementById("remarksInput").value;
+			var rem=document.getElementById("clamRemarks");
+			var stat = document.getElementById("clamStatus");
+			stat.value=statusSpan;
+			rem.value=remarksSpan;
+		}
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Applications</title>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #4285f4;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px;
+            background-color: #fff;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4285f4;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Claim Applications</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                
+                
+                <th>Patient Name</th>
+                <th>Date of Birth</th>
+                <th>Gender</th>
+                <th>Contact Number</th>
+                <th>Address</th>
+                <th>Joined Date</th>
+                <th>Disease</th>
+                <th>Diagnosis</th>
+                <th>Treatment</th>
+                <th>Claim Amount Requested</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="claimApp : ${claimApplications}">
+                
+                
+                <td th:text="${claimApp.patientName}"></td>
+                <td th:text="${claimApp.dateOfBirth}"></td>
+                <td th:text="${claimApp.gender}"></td>
+                <td th:text="${claimApp.contactNumber}"></td>
+                <td th:text="${claimApp.address}"></td>
+                <td th:text="${claimApp.joinedDate}"></td>
+                <td th:text="${claimApp.disease}"></td>
+                <td th:text="${claimApp.diagnosis}"></td>
+                <td th:text="${claimApp.treatment}"></td>
+                <td th:text="${claimApp.claimAmountRequested}"></td>
+                <td>
+                    <a th:href="@{'/getClaim?policy=' + ${claimApp.clamIplcId}}">Process Application</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
