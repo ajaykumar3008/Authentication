@@ -9,8 +9,8 @@ public class ClaimBills {
 	private int billIndex;
 	private String documentTitle;
 	private String documentPath;
-	private BigDecimal claimAmount;
-	private BigDecimal processedAmount;
+	private double claimAmount;
+	private double processedAmount;
 	private Date processedDate;
 	private int processedBy;
 	private String remarks;
@@ -57,19 +57,19 @@ public class ClaimBills {
 		this.documentPath = documentPath;
 	}
 
-	public BigDecimal getClaimAmount() {
+	public double getClaimAmount() {
 		return claimAmount;
 	}
 
-	public void setClaimAmount(BigDecimal claimAmount) {
-		this.claimAmount = claimAmount;
+	public void setClaimAmount(double d) {
+		this.claimAmount = d;
 	}
 
-	public BigDecimal getProcessedAmount() {
+	public double getProcessedAmount() {
 		return processedAmount;
 	}
 
-	public void setProcessedAmount(BigDecimal processedAmount) {
+	public void setProcessedAmount(double processedAmount) {
 		this.processedAmount = processedAmount;
 	}
 

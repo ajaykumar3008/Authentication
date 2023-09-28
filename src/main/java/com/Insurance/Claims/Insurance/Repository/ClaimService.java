@@ -11,7 +11,11 @@ import com.Insurance.Claims.Insurance.Contracts.IService;
 import com.Insurance.Claims.Insurance.Models.Claim;
 import com.Insurance.Claims.Insurance.Models.ClaimApplication;
 import com.Insurance.Claims.Insurance.Models.ClaimBills;
+import com.Insurance.Claims.Insurance.Models.ClaimHistory;
 import com.Insurance.Claims.Insurance.Models.CoveredDiseases;
+import com.Insurance.Claims.Insurance.Models.PolicyMembers;
+import com.Insurance.Claims.Insurance.Models.ReUpload;
+import com.Insurance.Claims.Insurance.Models.Uploads;
 
 @Service
 public class ClaimService implements IService {
@@ -38,8 +42,8 @@ public class ClaimService implements IService {
 	}
 
 	@Override
-	public void addClaim(int i,double requestAmount) {
-		cdao.setClaim(i,requestAmount);
+	public void addClaim(int i, double requestAmount) {
+		cdao.setClaim(i, requestAmount);
 
 	}
 
@@ -50,9 +54,9 @@ public class ClaimService implements IService {
 	}
 
 	@Override
-	public void addClaimBills(String f, String filePath, int cid) {
+	public void addClaimBills(ClaimBills bill) {
 		// TODO Auto-generated method stub
-		cdao.setDocs(f, filePath, cid);
+		cdao.setDocs(bill);
 	}
 
 	@Override
@@ -120,14 +124,65 @@ public class ClaimService implements IService {
 
 	@Override
 	public void editClaimById(int clamId, String clamRemarks, String clamStatus, String clamProcessedAmount) {
-		
-		cdao.updateClaimBill(clamId,clamRemarks,clamStatus,clamProcessedAmount);
+
+		cdao.updateClaimBill(clamId, clamRemarks, clamStatus, clamProcessedAmount);
 	}
 
 	@Override
 	public void updateClaimDate(int clamId) {
 		cdao.updateDate(clamId);
+
+	}
+
+	@Override
+	public List<PolicyMembers> getPlcyMembers() {
+		// TODO Auto-generated method stub
+		return cdao.getPoliMem();
+	}
+
+	@Override
+	public List<ClaimHistory> getHistory(int cid) {
+		// TODO Auto-generated method stub
+		return cdao.getHistory(cid);
+	}
+
+	@Override
+	public List<String> getFamilyByPolicy(int id) {
+		List<PolicyMembers> members = cdao.getPoliMem();
+		List<String> names = new ArrayList<>();
+		for (PolicyMembers mem : members) {
+
+			if (mem.getInsurancePolicyId() == id) {
+				names.add(mem.getMemberName());
+			}
+		}
+		return names;
+	}
+
+	@Override
+	public void addRequiredUpload(ReUpload requiredUpload) {
+		cdao.addRequiredUploads(requiredUpload);
+
+	}
+
+	@Override
+	public List<ReUpload> getAllReUploads(int id) {
+		List<ReUpload> list = cdao.getAllReUploads(id);
+
+		return list;
+	}
+
+	@Override
+	public void addUploads(Uploads up) {
 		
+		cdao.addUploads(up);
+
+	}
+
+	@Override
+	public List<Uploads> getAllUploads(int claimId) {
+		
+		return cdao.getAllUploads(claimId);
 	}
 
 }

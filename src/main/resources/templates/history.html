@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #007acc;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .claim-info {
+            margin-bottom: 20px;
+        }
+
+        .claim-bills {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h3>ur history</h3>
+    <table class="table" border=1px>
+        <thead>
+            <tr>
+            <th>claimFlow Id</th>
+                <th>Claim Id</th>
+                <th>Claim Status</th>
+                <th>Claim Remarks</th>
+                <th>Claim Applied Date</th>
+                <th>Claim Processed By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="history : ${claimhistory}">
+                <td th:text="${history.cf_id}"></td>
+                <td th:text="${history.cf_clam_id}"></td>
+                <td th:text="${history.cf_clam_status}"></td>
+                <td th:text="${history.cf_clam_remarks}"></td>
+                <td th:text="${history.cf_clam_date}"></td>
+                <td th:text="${history.cf_clam_processed_by}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 public class ClaimApplication {
 
 	private int clamIplcId;
-	int memberIndex;
+	String memberIndex;
 	String relation;
 	private Date joinedDate;
 	private String patientName;
@@ -27,12 +27,12 @@ public class ClaimApplication {
 		this.clamIplcId = clamIplcId;
 	}
 
-	public int getMemberIndex() {
+	public String getMemberIndex() {
 		return memberIndex;
 	}
 
 	public void setMemberIndex(String memberIndex) {
-		this.memberIndex = Integer.parseInt(memberIndex);
+		this.memberIndex = memberIndex;
 	}
 
 	public String getRelation() {

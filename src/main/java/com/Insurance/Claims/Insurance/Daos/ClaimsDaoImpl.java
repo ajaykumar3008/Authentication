@@ -1,7 +1,6 @@
 package com.Insurance.Claims.Insurance.Daos;
 
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,19 @@ import com.Insurance.Claims.Insurance.Contracts.ClaimsDao;
 import com.Insurance.Claims.Insurance.Models.Claim;
 import com.Insurance.Claims.Insurance.Models.ClaimApplication;
 import com.Insurance.Claims.Insurance.Models.ClaimBills;
+import com.Insurance.Claims.Insurance.Models.ClaimHistory;
 import com.Insurance.Claims.Insurance.Models.CoveredDiseases;
+import com.Insurance.Claims.Insurance.Models.PolicyMembers;
+import com.Insurance.Claims.Insurance.Models.ReUpload;
+import com.Insurance.Claims.Insurance.Models.Uploads;
 import com.Insurance.Claims.Insurance.RowMappers.ApplicationRowMapper;
 import com.Insurance.Claims.Insurance.RowMappers.ClaimBillsMap;
+import com.Insurance.Claims.Insurance.RowMappers.ClaimHistoryMapper;
 import com.Insurance.Claims.Insurance.RowMappers.ClaimsMapper;
 import com.Insurance.Claims.Insurance.RowMappers.DiseasesRowMapper;
-import com.Insurance.Claims.Insurance.RowMappers.RowMap;
+import com.Insurance.Claims.Insurance.RowMappers.PolicyMembersRowMapper;
+import com.Insurance.Claims.Insurance.RowMappers.ReUploadRowMapper;
+import com.Insurance.Claims.Insurance.RowMappers.*;
 
 @Component
 public class ClaimsDaoImpl implements ClaimsDao {
@@ -32,7 +38,7 @@ public class ClaimsDaoImpl implements ClaimsDao {
 	private String SQL_GET_FILTERED_CLAIMS = "select * from  _Claims where clam_status=?";
 	private String SQL_GET_CLAIM_BY_ID = "select * from  _Claims where clam_id=?";
 	private String SQL_INSERT_CLAIM = "insert into _Claims(clam_source,clam_type,clam_date,clam_amount_requested,clam_iplc_id) values(?,?,?,?,?)";
-	private String SQL_INSERT_CLAIMBill = "insert into ClaimBills(clam_id,clbl_document_title,clbl_document_path) values(?,?,?)";
+	private String SQL_INSERT_CLAIMBill = "insert into Claim_Bills(clam_id,clbl_document_title,clbl_document_path,clam_processed_amount,clam_processed_date) values(?,?,?,?,?)";
 
 	@Autowired
 	public ClaimsDaoImpl(DataSource dataSource) {
@@ -74,16 +80,18 @@ public class ClaimsDaoImpl implements ClaimsDao {
 	}
 
 	@Override
-	public void setDocs(String f, String filePath, int cid) {
+	public void setDocs(ClaimBills bill) {
 		System.out.println("brooo");
-		jdbcTemplate.update(SQL_INSERT_CLAIMBill, cid, f, filePath);
+		String currentDate = LocalDate.now() + "";
+		Date sqlDate = Date.valueOf(currentDate);
+		jdbcTemplate.update(SQL_INSERT_CLAIMBill, bill.getClaimId(),bill.getDocumentTitle(),bill.getDocumentPath(),bill.getProcessedAmount(),sqlDate);
 	}
 
 	@Override
 	public ArrayList<ClaimBills> getDocs(int clamId) {
 		// TODO Auto-generated method stub
 		System.out.println("docs");
-		return (ArrayList<ClaimBills>) jdbcTemplate.query("select * from ClaimBills where clam_id=" + clamId,
+		return (ArrayList<ClaimBills>) jdbcTemplate.query("select * from Claim_Bills where clam_id=" + clamId,
 				new ClaimBillsMap());
 	}
 
@@ -111,19 +119,19 @@ public class ClaimsDaoImpl implements ClaimsDao {
 	}
 
 	@Override
-	public void setClaim(int i,double requestAmount) {
-		
+	public void setClaim(int i, double requestAmount) {
+
 		String currentDate = LocalDate.now() + "";
 		Date sqlDate = Date.valueOf(currentDate);
-		
-			jdbcTemplate.update(SQL_INSERT_CLAIM, "HSPT", "DRCT", sqlDate,requestAmount, i);
+
+		jdbcTemplate.update(SQL_INSERT_CLAIM, "HSPT", "DRCT", sqlDate, requestAmount, i);
 	}
 
 	@Override
 	public ClaimBills getDocBills(int billIndex) {
 		// TODO Auto-generated method stub
 		System.out.println("nooooo");
-		return (ClaimBills) jdbcTemplate.queryForObject("select * from ClaimBills where clbl_billindex=" + billIndex,
+		return (ClaimBills) jdbcTemplate.queryForObject("select * from Claim_Bills where clbl_billindex=" + billIndex,
 				new ClaimBillsMap());
 	}
 
@@ -157,7 +165,7 @@ public class ClaimsDaoImpl implements ClaimsDao {
 		String currentDate = LocalDate.now() + "";
 		Date sqlDate = Date.valueOf(currentDate);
 		System.out.println(sqlDate + "   ppp");
-		String query = "update ClaimBills set clbl_processed_amount=?,clbl_processed_date=?,clbl_remarks=?,clbl_status=? where clbl_billindex=?";
+		String query = "update Claim_Bills set clbl_processed_amount=?,clbl_processed_date=?,clbl_remarks=?,clbl_status=? where clbl_billindex=?";
 		Object[] values = { bill.getProcessedAmount(), sqlDate, bill.getRemarks(), bill.getStatus(),
 				bill.getBillIndex() };
 		jdbcTemplate.update(query, values);
@@ -175,16 +183,60 @@ public class ClaimsDaoImpl implements ClaimsDao {
 
 	@Override
 	public void updateClaimBill(int clamId, String clamRemarks, String clamStatus, String clamProcessedAmount) {
-		jdbcTemplate.update("update _Claims set clam_remarks=?, clam_status=?,clam_processed_amount=? where clam_id=?",clamRemarks,clamStatus,Double.parseDouble(clamProcessedAmount),clamId);
-		
+		jdbcTemplate.update("update _Claims set clam_remarks=?, clam_status=?,clam_processed_amount=? where clam_id=?",
+				clamRemarks, clamStatus, Double.parseDouble(clamProcessedAmount), clamId);
+
 	}
 
 	@Override
 	public void updateDate(int clamId) {
 		String currentDate = LocalDate.now() + "";
 		Date sqlDate = Date.valueOf(currentDate);
-		Object[] values= {sqlDate,clamId};
-		jdbcTemplate.update("update _Claims set clam_processed_date=? where clam_id=?",values );
+		Object[] values = { sqlDate, clamId };
+		jdbcTemplate.update("update _Claims set clam_processed_date=? where clam_id=?", values);
+	}
+
+	@Override
+	public List<PolicyMembers> getPoliMem() {
+		// TODO Auto-generated method stub
+		return jdbcTemplate.query(
+				"select ipcm_mindex,iplc_id, ipcm_membername, ipcm_relation from insurancepolicycoveragemembers",
+				new PolicyMembersRowMapper());
+	}
+
+	@Override
+	public List<ClaimHistory> getHistory(int cid) {
+		// TODO Auto-generated method stub
+		return jdbcTemplate.query("select  * from claim_flow where cf_clam_id=" + cid, new ClaimHistoryMapper());
+	}
+
+	@Override
+	public void addRequiredUploads(ReUpload upload) {
+		String query = "insert into reuploads(claimId,name,type,Status,description) values(?,?,?,?,?)";
+		Object[] values = { upload.getClaimId(), upload.getName(), upload.getType(), upload.getStatus(),
+				upload.getDescription() };
+		jdbcTemplate.update(query, values);
+	}
+
+	@Override
+	public List<ReUpload> getAllReUploads(int id) {
+
+		return jdbcTemplate.query("select * from reuploads where claimId="+id, new ReUploadRowMapper());
+	}
+
+	@Override
+	public void addUploads(Uploads up) {
+
+		System.out.println("jdbc");
+		String query = "insert into uploads(uploadId,reuploadId,claimId,data,type) values(?,?,?,?)";
+		Object[] values = { up.getUploadId(), up.getReUploadId(), up.getClaimId(), up.getData(), up.getType() };
+		jdbcTemplate.update(query, values);
+	}
+
+	@Override
+	public List<Uploads> getAllUploads(int claimId) {
+		
+		return jdbcTemplate.query("select * from uploads where claimId="+claimId, new UploadsRowMapper());
 	}
 
 }
